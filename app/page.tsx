@@ -3,19 +3,19 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="min-h-[100dvh] bg-zinc-50 text-zinc-900 dark:bg-black dark:text-zinc-50">
-      <header className="border-b border-black/5 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-black/30">
+    <div className="min-h-[100dvh] bg-sky-50 text-slate-900">
+      <header className="border-b border-sky-100 bg-white/80 backdrop-blur">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/next.svg"
-              alt="Logo"
-              width={28}
-              height={28}
-              className="dark:invert"
+              src="/logo.svg"
+              alt="Cravora logo"
+              width={36}
+              height={36}
+              className="h-9 w-9 shrink-0"
               priority
             />
-            <span className="font-semibold tracking-tight">Food Ordering</span>
+            <span className="font-semibold tracking-tight text-sky-900">Cravora</span>
           </Link>
           <nav className="flex items-center gap-3 text-sm">
             <Link
@@ -37,7 +37,7 @@ export default function Home() {
               Login
             </Link>
             <Link
-              className="rounded-lg px-3 py-2 bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+              className="rounded-lg bg-sky-600 px-3 py-2 text-white hover:bg-sky-700"
               href="/register"
             >
               Register
@@ -50,18 +50,18 @@ export default function Home() {
         <section className="py-14 md:py-20">
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div className="space-y-5">
-              <h1 className="text-balance text-4xl font-semibold leading-tight md:text-5xl">
-                Order your favorite food in minutes.
+              <p className="text-sm uppercase tracking-[0.35em] text-sky-700">Cravora • modern food ordering</p>
+              <h1 className="text-balance text-4xl font-semibold leading-tight md:text-5xl text-sky-950">
+                Fresh meals, fast checkout, and a smoother food journey.
               </h1>
-              <p className="max-w-prose text-pretty text-lg text-zinc-600 dark:text-zinc-300">
-                Search, filter by category, add items to your cart, checkout
-                securely, and track your order status in real-time.
+              <p className="max-w-prose text-pretty text-lg text-slate-600">
+                Browse the menu, add favorites to your cart, sign up in seconds, and enjoy a light-blue, demo-ready experience built for quick ordering.
               </p>
 
               <div className="flex flex-wrap gap-3">
                 <Link
                   href="/menu"
-                  className="inline-flex items-center justify-center rounded-xl bg-black px-5 py-3 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                  className="inline-flex items-center justify-center rounded-xl bg-sky-600 px-5 py-3 text-sm font-medium text-white hover:bg-sky-700"
                 >
                   Browse Menu
                 </Link>
@@ -102,8 +102,8 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-b from-black/5 to-transparent dark:from-white/10" />
-              <div className="rounded-[2rem] border border-black/10 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-white/15 dark:bg-black/30">
+              <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-b from-sky-100 to-transparent" />
+              <div className="rounded-[2rem] border border-sky-100 bg-white/90 p-6 shadow-lg shadow-sky-100 backdrop-blur">
                 <h2 className="text-lg font-semibold">Quick start</h2>
                 <ol className="mt-4 space-y-3 text-sm text-zinc-700 dark:text-zinc-200">
                   <li className="flex gap-3">
@@ -129,13 +129,13 @@ export default function Home() {
                 <div className="mt-6 flex gap-3">
                   <Link
                     href="/menu"
-                    className="flex-1 rounded-xl bg-zinc-900 px-4 py-3 text-center text-sm font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                    className="flex-1 rounded-xl bg-sky-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-sky-700"
                   >
                     Start ordering
                   </Link>
                   <Link
                     href="/about"
-                    className="rounded-xl border border-black/10 px-4 py-3 text-center text-sm font-medium hover:bg-black/5 dark:border-white/15 dark:hover:bg-white/10"
+                    className="rounded-xl border border-sky-200 px-4 py-3 text-center text-sm font-medium text-slate-700 hover:bg-sky-50"
                   >
                     About
                   </Link>
@@ -163,7 +163,7 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className="rounded-2xl border border-black/10 bg-white/60 p-5 dark:border-white/15 dark:bg-white/5"
+                className="rounded-2xl border border-sky-100 bg-white/90 p-5 shadow-sm"
               >
                 <div className="text-sm font-semibold">{c.title}</div>
                 <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
@@ -177,7 +177,7 @@ export default function Home() {
 
       <footer className="border-t border-black/5 py-6 text-sm text-zinc-600 dark:border-white/10 dark:text-zinc-300">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4">
-          <span>© {new Date().getFullYear()} Food Ordering System</span>
+          <span>© {new Date().getFullYear()} Cravora</span>
           <span className="hidden sm:inline">
             Next.js 15 • MongoDB • JWT • Tailwind
           </span>

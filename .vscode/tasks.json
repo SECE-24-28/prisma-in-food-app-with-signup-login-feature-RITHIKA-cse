@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Next dev server",
+			"type": "shell",
+			"command": "cd \"c:\\Users\\itsri\\Desktop\\FSD\\OnlineOrderingFoodSystem\\my-app\" && npm run dev",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

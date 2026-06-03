@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 
@@ -18,12 +18,40 @@ type CartContextValue = {
   subtotal?: number;
 };
 
+const CART_KEY = "foodapp:cart";
+
+function isDemoMode() {
+  return !process.env.NEXT_PUBLIC_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL.trim() === "";
+}
+
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") return [];
+    const saved = localStorage.getItem(CART_KEY);
+    if (!saved) return [];
+    try {
+      return JSON.parse(saved) as CartItem[];
+    } catch {
+      localStorage.removeItem(CART_KEY);
+      return [];
+    }
+  });
 
-  async function addItem(foodId: string, quantity = 1) {
+  const addItem = useCallback(async (foodId: string, quantity = 1) => {
+    if (isDemoMode()) {
+      setItems((prev) => {
+        const updated = prev.some((p) => p.foodId === foodId)
+          ? prev.map((p) => (p.foodId === foodId ? { ...p, quantity: p.quantity + quantity } : p))
+          : [...prev, { foodId, quantity }];
+        localStorage.setItem(CART_KEY, JSON.stringify(updated));
+        return updated;
+      });
+      toast.success("Added to cart");
+      return;
+    }
+
     setItems((prev) => {
       const existing = prev.find((p) => p.foodId === foodId);
       if (existing) return prev.map((p) => (p.foodId === foodId ? { ...p, quantity: p.quantity + quantity } : p));
@@ -48,9 +76,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       toast.error(msg);
     }
 
-  }
+  }, []);
 
-  async function updateQty(foodId: string, quantity: number) {
+  const updateQty = useCallback(async (foodId: string, quantity: number) => {
+    if (isDemoMode()) {
+      const updated = items.map((p) => (p.foodId === foodId ? { ...p, quantity } : p)).filter((p) => p.quantity > 0);
+      setItems(updated);
+      localStorage.setItem(CART_KEY, JSON.stringify(updated));
+      return;
+    }
+
     setItems((prev) => prev.map((p) => (p.foodId === foodId ? { ...p, quantity } : p)));
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL ?? ""}/api/cart/update`, {
@@ -66,9 +101,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       toast.error(msg);
     }
 
-  }
+  }, [items]);
 
-  async function removeItem(foodId: string) {
+  const removeItem = useCallback(async (foodId: string) => {
+    if (isDemoMode()) {
+      const updated = items.filter((p) => p.foodId !== foodId);
+      setItems(updated);
+      localStorage.setItem(CART_KEY, JSON.stringify(updated));
+      toast.success("Removed from cart");
+      return;
+    }
+
     setItems((prev) => prev.filter((p) => p.foodId !== foodId));
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL ?? ""}/api/cart/remove`, {
@@ -84,9 +127,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       toast.error(msg);
     }
 
-  }
+  }, [items]);
 
-  const value = useMemo<CartContextValue>(() => ({ items, setItems, addItem, updateQty, removeItem }), [items]);
+  const value = useMemo<CartContextValue>(() => ({ items, setItems, addItem, updateQty, removeItem }), [items, addItem, updateQty, removeItem]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
